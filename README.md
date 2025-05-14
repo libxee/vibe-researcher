@@ -1,18 +1,30 @@
-# Multi-Agent Research
+# Deep Research
 
-一个基于TypeScript和LangGraph的MultiAgent架构研究助手，用于进行深度研究和信息收集。
+一个基于Vibe Coding理念的深度研究项目，完全通过Claude 3.7 AI交互式创建的多代理协作系统，用于高效进行深度研究和信息收集。通过直觉驱动的编程方法，实现AI赋能的研究体验。
 
-## 功能特点
+**项目灵感来源于 [bytedance/deer-flow](https://github.com/bytedance/deer-flow)**
 
+## 项目亮点
+
+- 🔮 **Vibe Coding**: AI驱动的交互式编程方式，通过与Claude 3.7对话完成全部代码创建，让开发过程更加自然和高效
+- 💻 **Cursor集成**: 充分利用Cursor IDE的强大功能，实现无缝开发体验
 - 🤖 **多代理协作**: 基于LangGraph实现的多代理协作架构，各司其职
 - 🔍 **深度研究**: 通过迭代搜索和信息处理，深入探索复杂主题
 - 📊 **可控深度和广度**: 自定义研究深度和广度，灵活调整研究范围
 - 🌐 **多搜索引擎支持**: 支持Tavily, DuckDuckGo, Bing, Google等多种搜索引擎
 - 📝 **高质量报告**: 自动生成结构化的研究报告，包含引用和关键发现
 - 🔄 **递归研究流程**: 基于初始发现自动深入探索相关主题
-- 📦 **本地存储**: 使用SQLite存储研究任务和步骤，方便回顾和分析
-- 🚀 **API服务**: 提供RESTful API接口，方便集成和扩展
 - 🔌 **多LLM提供商**: 支持OpenAI和DeepSeek，可灵活切换不同代理使用的LLM
+
+## 开发理念
+
+本项目基于Vibe Coding理念开发，这是一种完全通过AI交互创建代码的编程方式，通过以下方式实现：
+
+- 使用Cursor作为主要IDE，充分利用AI辅助编程功能
+- 通过与Claude 3.7的对话直接生成代码，无需手动编写
+- 采用流畅的开发工作流，减少上下文切换
+- 专注于创意实现而非样板代码编写
+- 直觉驱动的开发过程，让编码更具表现力和效率
 
 ## 系统架构
 
@@ -20,7 +32,7 @@
 
 1. **协调者(Coordinator)**: 管理整个研究流程，决定下一步行动
 2. **规划者(Planner)**: 分析研究问题，制定详细的研究计划
-3. **研究员(Researcher)**: 执行搜索查询，提取和分析信息（默认使用DeepSeek）
+3. **研究员(Researcher)**: 执行搜索查询，提取和分析信息
 4. **撰写者(Writer)**: 整合所有研究发现，生成最终研究报告
 
 这些代理通过LangGraph状态图进行协作，每个代理只关注自己的专业领域，共同完成复杂的研究任务。
@@ -56,8 +68,7 @@ multi-agent-research/
 │   ├── workflows/            # 工作流
 │   │   ├── researchWorkflow.ts # 研究工作流
 │   │   └── index.ts          # 工作流索引
-│   ├── index.ts              # 入口文件
-│   └── server.ts             # API服务器
+│   └── index.ts              # 入口文件
 ├── .env.example              # 环境变量示例
 ├── package.json              # 项目配置
 ├── tsconfig.json             # TypeScript配置
@@ -89,22 +100,7 @@ npm run build
 ```bash
 # 运行研究流程
 npm run research "人工智能在医疗领域的应用" --depth 3 --breadth 5
-
-# 启动API服务器
-npm run server
-
-# 创建研究任务
-npm run create-task "量子计算对密码学的影响" --depth 2 --breadth 4
 ```
-
-### API使用
-
-启动服务器后，可以通过以下API接口使用：
-
-- `GET /health` - 健康检查
-- `GET /api/tasks` - 获取任务列表
-- `GET /api/tasks/:id` - 获取指定任务详情
-- `POST /api/tasks` - 创建新研究任务
 
 ## 配置
 
@@ -123,12 +119,8 @@ DEEPSEEK_MODEL=deepseek-chat
 SEARCH_API_KEY=your_search_key_here
 SEARCH_API_TYPE=tavily  # 支持: tavily, bing, google, duckduckgo
 
-# 服务器配置
-PORT=3000
-NODE_ENV=development
-
-# 模型配置
-MODEL_NAME=gpt-4-0125-preview
+# 其他模型配置
+GPT_MODEL_NAME=gpt-4-0125-preview
 TEMPERATURE=0.2
 ```
 
@@ -136,7 +128,7 @@ TEMPERATURE=0.2
 
 ### DeepSeek集成
 
-系统默认配置研究员代理使用DeepSeek模型，因为它擅长处理和分析信息。其他代理默认使用OpenAI。你可以在`src/config/index.ts`中的`WORKFLOW_CONFIG`修改这些设置：
+系统可以配置研究员代理使用DeepSeek模型，因为它擅长处理和分析信息。你可以在`src/config/index.ts`中的`WORKFLOW_CONFIG`修改这些设置：
 
 ```typescript
 providerConfig: {
@@ -147,7 +139,17 @@ providerConfig: {
 }
 ```
 
-DeepSeek API与OpenAI API格式兼容，通过OpenAI SDK进行调用，只需配置不同的baseURL和API Key即可。
+所有提供商API通过统一的接口进行调用，配置不同的baseURL和API Key即可。
+
+## Vibe Coding工作流
+
+本项目采用Vibe Coding工作流，完全通过AI交互创建，具体步骤如下：
+
+1. 使用Cursor IDE创建项目结构
+2. 通过与Claude 3.7的对话直接生成代码框架
+3. 通过交互式对话，迭代优化功能
+4. 使用AI辅助进行重构和测试
+5. 保持简洁高效的代码风格和项目结构
 
 ## 开发
 
@@ -168,6 +170,10 @@ npm run lint
 2. 添加新代理: 在`src/agents`目录下实现新代理
 3. 修改工作流: 在`src/workflows/researchWorkflow.ts`中修改工作流程
 4. 添加新LLM提供商: 在`src/services/llmClient.ts`中实现新的客户端
+
+## 灵感来源
+
+本项目受到字节跳动的[DeerFlow](https://github.com/bytedance/deer-flow)项目启发，DeerFlow是一个社区驱动的深度研究框架，将语言模型与网页搜索、爬取和Python执行等工具相结合，并将成果回馈开源社区。
 
 ## 许可证
 
